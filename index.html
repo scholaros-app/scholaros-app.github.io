@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ScholarOS - Your assignments, in a planner that works</title>
+<meta name="description" content="ScholarOS reads the assignment list off the Canvas, Brightspace, Blackboard or Moodle page you are already signed into and turns it into a planner. $2.99 once, 14-day trial, no account, no server." />
+<link rel="canonical" href="https://scholaros-app.github.io/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ScholarOS" />
+<meta property="og:description" content="Your assignments, in a planner that works. $2.99 once." />
+<meta property="og:url" content="https://scholaros-app.github.io/" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+  :root {
+    --bg:        #fbfcfd;
+    --surface:   #ffffff;
+    --surface-2: #f2f4f8;
+    --ink:       #10131a;
+    --muted:     #4d5665;
+    --rule:      #e2e6ee;
+    --accent:    #1f4fd8;
+    --accent-2:  #e9eefc;
+    --on-accent: #ffffff;
+    --good:      #0f6f47;
+    --good-2:    #e6f3ec;
+    --stale:     #5f6776;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:        #0d0f13;
+      --surface:   #151920;
+      --surface-2: #1c212b;
+      --ink:       #eef1f6;
+      --muted:     #8b93a3;
+      --rule:      #262c38;
+      --accent:    #6f9bff;
+      --accent-2:  #17203a;
+      --on-accent: #0b0e14;
+      --good:      #5fc796;
+      --good-2:    #12241c;
+      --stale:     #8b93a3;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg:        #0d0f13;
+    --surface:   #151920;
+    --surface-2: #1c212b;
+    --ink:       #eef1f6;
+    --muted:     #8b93a3;
+    --rule:      #262c38;
+    --accent:    #6f9bff;
+    --accent-2:  #17203a;
+    --on-accent: #0b0e14;
+    --good:      #5fc796;
+    --good-2:    #12241c;
+    --stale:     #8b93a3;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 0 1.5rem; }
+  .narrow { max-width: 44rem; }
+
+  h1, h2, h3 {
+    font-family: Fraunces, Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    letter-spacing: -.01em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  a { color: var(--accent); }
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* ---------------- nav ---------------- */
+
+  nav {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .nav-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.1rem;
+    padding-bottom: 1.1rem;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-family: Fraunces, Georgia, serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -.01em;
+  }
+  .mark {
+    width: 1.7rem; height: 1.7rem;
+    border-radius: 6px;
+    background: var(--accent);
+    display: grid; place-items: center;
+    flex: none;
+  }
+  .mark svg { width: 1.05rem; height: 1.05rem; display: block; }
+  .nav-links { display: flex; gap: 1.4rem; font-size: .92rem; }
+  .nav-links a { color: var(--muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* ---------------- hero ---------------- */
+
+  header.hero { padding: 4.5rem 0 3.5rem; }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: .7rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.1rem;
+  }
+
+  h1 { font-size: clamp(2.3rem, 6vw, 3.7rem); line-height: 1.03; }
+
+  .lede {
+    font-size: 1.2rem;
+    color: var(--muted);
+    max-width: 34rem;
+    margin: 1.3rem 0 0;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.4rem;
+    margin-top: 2rem;
+  }
+  .btn {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--on-accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .98rem;
+    padding: .8rem 1.5rem;
+    border-radius: 8px;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .cta-note { font-size: .9rem; color: var(--muted); }
+
+  /* ---------------- the transformation ---------------- */
+
+  .transform {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem 1.3rem;
+  }
+  .panel-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: .66rem;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 .9rem;
+  }
+
+  .rows { display: flex; flex-direction: column; gap: .5rem; }
+
+  .raw {
+    font-family: "JetBrains Mono", monospace;
+    font-size: .78rem;
+    line-height: 1.5;
+    color: var(--stale);
+    padding: .5rem .6rem;
+    border-radius: 6px;
+    background: var(--surface-2);
+    word-break: break-word;
+  }
+
+  .task {
+    padding: .55rem .7rem;
+    border-radius: 7px;
+    background: var(--surface-2);
+    border-left: 2px solid var(--accent);
+  }
+  .task-title { font-weight: 600; font-size: .88rem; line-height: 1.35; }
+  .task-meta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: .7rem;
+    color: var(--muted);
+    margin-top: .18rem;
+  }
+
+  .arrow {
+    color: var(--muted);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .transform-note {
+    margin: 1.1rem 0 0;
+    font-size: .88rem;
+    color: var(--muted);
+    max-width: 40rem;
+  }
+
+  /* ---------------- sections ---------------- */
+
+  section { padding: 4rem 0; border-top: 1px solid var(--rule); }
+  section > .wrap > h2 { font-size: clamp(1.6rem, 3.6vw, 2.1rem); }
+  .sec-lede { color: var(--muted); margin: .8rem 0 0; max-width: 36rem; }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.6rem 2.2rem;
+    margin-top: 2.4rem;
+  }
+  .item h3 { font-size: 1.05rem; }
+  .item p { margin: .45rem 0 0; color: var(--muted); font-size: .95rem; }
+
+  /* ---------------- pricing ---------------- */
+
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.25rem;
+    margin-top: 2.4rem;
+  }
+  .plan {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+  .plan.paid { border-color: var(--accent); }
+  .plan h3 { font-size: 1.15rem; }
+  .price {
+    font-family: Fraunces, Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -.02em;
+  }
+  .price small {
+    font-family: "Public Sans", sans-serif;
+    font-size: .85rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0;
+  }
+  .plan ul { margin: 0; padding-left: 1.05rem; display: flex; flex-direction: column; gap: .4rem; }
+  .plan li { font-size: .93rem; }
+  .plan li::marker { color: var(--accent); }
+
+  .refund {
+    margin-top: 1.8rem;
+    font-size: .9rem;
+    color: var(--muted);
+    max-width: 40rem;
+  }
+
+  /* ---------------- trust ---------------- */
+
+  .never {
+    margin-top: 2.2rem;
+    display: grid;
+    gap: .1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .never div {
+    padding: .85rem .2rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: .96rem;
+    display: grid;
+    grid-template-columns: 1.4rem 1fr;
+    gap: .7rem;
+    align-items: baseline;
+  }
+  .never span { color: var(--good); font-weight: 600; }
+
+  /* ---------------- status ---------------- */
+
+  .status {
+    margin-top: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 1.2rem 1.35rem;
+  }
+  .status p { margin: 0; }
+  .status p + p { margin-top: .6rem; }
+
+  /* ---------------- footer ---------------- */
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2.5rem 0 3.5rem;
+    font-size: .9rem;
+    color: var(--muted);
+  }
+  .foot-in { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--ink); }
+
+  @media (max-width: 40rem) {
+    body { font-size: 16px; }
+    header.hero { padding: 3rem 0 2.5rem; }
+    .transform { grid-template-columns: 1fr; gap: .9rem; }
+    .arrow { transform: rotate(90deg); justify-self: center; }
+    section { padding: 3rem 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="/scholaros-privacy/">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10 12 5 2 10l10 5 10-5Z"/>
+          <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/>
+        </svg>
+      </span>
+      ScholarOS
+    </a>
+    <div class="nav-links">
+      <a href="#what">What it does</a>
+      <a href="#price">Price</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">For students on Canvas, Brightspace, Blackboard and Moodle</p>
+    <h1>Your assignments, off the LMS and into a planner that works</h1>
+    <p class="lede">ScholarOS reads the assignment list on the learning system page you are already signed into, and turns it into a calendar you can actually plan against. It takes about twenty minutes a week of copying due dates by hand and makes it nothing.</p>
+
+    <div class="cta-row">
+      <a class="btn" href="#price">See what it costs</a>
+      <span class="cta-note">$2.99 once &middot; 14-day trial &middot; no account, no card to start</span>
+    </div>
+
+    <div class="transform">
+      <div class="panel">
+        <p class="panel-label">What the page gives you</p>
+        <div class="rows">
+          <div class="raw">Due April 9</div>
+          <div class="raw">MATH-181-05 Problem Set 9</div>
+          <div class="raw">Due 4/10</div>
+          <div class="raw">02 Reading Response 4</div>
+        </div>
+      </div>
+
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+
+      <div class="panel">
+        <p class="panel-label">What ScholarOS files</p>
+        <div class="rows">
+          <div class="task">
+            <div class="task-title">Lab 5: Sorting Algorithms</div>
+            <div class="task-meta">CSCI-142 &middot; Wed 9 Apr, 11:59pm</div>
+          </div>
+          <div class="task">
+            <div class="task-title">Problem Set 9</div>
+            <div class="task-meta">MATH-181 &middot; Tue 8 Apr, 12:00pm</div>
+          </div>
+          <div class="task">
+            <div class="task-title">Reading Response 4</div>
+            <div class="task-meta">PSYC-101 &middot; Thu 3 Apr, 11:59pm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="transform-note">Every task keeps a working link back to its own assignment page, so one click gets you to the thing itself rather than a course home page.</p>
+  </div>
+</header>
+
+<section id="what">
+  <div class="wrap">
+    <h2>What it actually does</h2>
+    <p class="sec-lede">ScholarOS organises and opens things. It does not write your coursework, and it is not trying to become the place you live.</p>
+
+    <div class="grid-2">
+      <div class="item">
+        <h3>Reads the page you are on</h3>
+        <p>You sign in to your school yourself, two-factor and all. ScholarOS waits until you are already in, then reads the assignment list that is on your screen. It does not open other pages or crawl your courses.</p>
+      </div>
+      <div class="item">
+        <h3>Shows you every import before it saves</h3>
+        <p>Imports land in a review inbox with a confidence flag and where each field came from. Fix a title, a course, or a due date before it becomes a task. A parser miss is an annoyance rather than a wrong calendar.</p>
+      </div>
+      <div class="item">
+        <h3>Calendar, list, classes, reminders</h3>
+        <p>Drag to reschedule. File classes by term. Group the weekly quizzes that repeat all semester. Soft delete with undo, because everyone mis-taps.</p>
+      </div>
+      <div class="item">
+        <h3>Plans around how you actually work</h3>
+        <p>Smart Plan builds a study schedule from what is due. It learns that you finish one class the night before and another three days early, and schedules accordingly. Runs on a free Google Gemini key you supply.</p>
+      </div>
+      <div class="item">
+        <h3>Remembers which docs belong to which class</h3>
+        <p>Paste a document link once and ScholarOS offers it back on the next assignment in that class.</p>
+      </div>
+      <div class="item">
+        <h3>Opens the whole context at once</h3>
+        <p>One click opens the assignment page, the document you attached, and your AI workspace together, instead of you hunting three tabs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="price">
+  <div class="wrap">
+    <h2>What it costs</h2>
+    <p class="sec-lede">One payment. Nothing renews, no card is kept on file, and there is no account to close.</p>
+
+    <div class="plans">
+      <div class="plan">
+        <h3>Free, permanently</h3>
+        <div class="price">$0</div>
+        <ul>
+          <li>Scanning and importing assignments</li>
+          <li>The review inbox, with inline correction</li>
+          <li>Calendar, list, task detail, reminders</li>
+          <li>Classes, terms, and assignment groups</li>
+          <li>The source link back to every assignment</li>
+          <li>Smart Plan, on your own Gemini key</li>
+        </ul>
+      </div>
+
+      <div class="plan paid">
+        <h3>Unlocked</h3>
+        <div class="price">$2.99 <small>once</small></div>
+        <ul>
+          <li>Document suggestions and link attachment</li>
+          <li>Course memory across the semester</li>
+          <li>One-click workspace launch</li>
+          <li>Covers the 2026&ndash;27 school year of updates</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="refund">Everything is unlocked for 14 days when you install, with no card and no email address. When the trial ends the planner keeps working in full and only the three extras above stop. Nothing you saved is taken away.</p>
+    <p class="refund">Paying gets you a licence key by email, usually within a few hours, which you paste into Settings. The key is checked on your own device, so it works offline and ScholarOS learns nothing about when you use it. Want a refund? Email <a href="mailto:scholaroshelp@gmail.com">scholaroshelp@gmail.com</a> and you will get one.</p>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap narrow">
+    <h2>What it never does</h2>
+    <p class="sec-lede">There is no ScholarOS server. No account, no sign-up, no analytics, and nowhere for your work to be sent, because nothing was built to receive it.</p>
+
+    <div class="never">
+      <div><span>&#10003;</span> Never asks for, stores, or sees your school password</div>
+      <div><span>&#10003;</span> Never touches Duo, SSO, or any multi-factor step</div>
+      <div><span>&#10003;</span> Never runs on any site except the school you added yourself</div>
+      <div><span>&#10003;</span> Never attaches a document without you clicking to confirm it</div>
+      <div><span>&#10003;</span> Never asks for access to your Google account</div>
+      <div><span>&#10003;</span> Never does your coursework</div>
+    </div>
+
+    <p class="refund">Uninstalling removes everything. The browser deletes the extension's storage with it, and there is no account to close because none was created. The full detail is in the <a href="privacy.html">privacy policy</a>.</p>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap narrow">
+    <h2>Getting it</h2>
+
+    <div class="status">
+      <p><strong>ScholarOS is in review for Microsoft Edge Add-ons.</strong> It works with Canvas, Brightspace, Blackboard and Moodle at any school. You add yours in one click when you open it. Once certification clears, the install link goes here.</p>
+      <p>Want to know when it is out, or have a school you would like added to the built-in list? Email <a href="mailto:scholaroshelp@gmail.com">scholaroshelp@gmail.com</a>.</p>
+    </div>
+
+    <p class="refund">It runs on Edge and Chrome, and needs a Chromium version of 114 or newer. If your school is not in the list, paste its address and ScholarOS will use it.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>ScholarOS</div>
+    <div>
+      <a href="privacy.html">Privacy policy</a> &nbsp;&middot;&nbsp;
+      <a href="mailto:scholaroshelp@gmail.com">scholaroshelp@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
