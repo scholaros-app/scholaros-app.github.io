@@ -138,11 +138,13 @@
 
 <p>This is off until you press Connect in Settings. Nothing about Calendar happens before that.</p>
 
-<p>When you press Connect, two things are asked for and both are shown to you by your browser: permission for ScholarOS to reach Google's API, and a Google sign-in asking only for the <code>calendar.events</code> scope. That scope lets ScholarOS create and update events. It does not let ScholarOS read your existing calendar, your contacts, your email, or anything else in your account.</p>
+<p>When you press Connect, two things are asked for and both are shown to you by your browser: permission for ScholarOS to reach Google's API, and a Google sign-in asking only for the <code>calendar.events</code> scope. That scope lets an app see and change events on your calendars. ScholarOS uses it only to create its own study-block events and to find, update, or delete those same events later; it never reads, changes, or deletes an event it did not create. It gives no access to your contacts, your email, or anything else in your account.</p>
 
 <p>Once connected, and only when you press the sync button on a Smart Plan, ScholarOS sends the study blocks in that plan: a title, a start and end time, and the name of the class each block is for. Nothing else about your account leaves the device, and nothing syncs on a schedule or in the background.</p>
 
 <p>Pressing Disconnect in Settings clears the connection and tells Google to forget the grant, so it stops showing in your Google account's connected-apps list rather than lingering there invisibly.</p>
+
+<p>ScholarOS's use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements. Calendar data is used only to put your study plan on your calendar. It is never sold, never used for advertising, and never read by a person.</p>
 
 
 <h3>About your Gemini API key</h3>
