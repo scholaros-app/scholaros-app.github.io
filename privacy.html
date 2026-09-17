@@ -65,7 +65,7 @@
 <header>
   <p class="meta" style="margin-bottom:.9rem"><a href="./">&larr; ScholarOS</a></p>
   <h1>ScholarOS Privacy Policy</h1>
-  <p class="meta"><strong>Last updated:</strong> 13 September 2026 &middot; <strong>Applies to:</strong> ScholarOS browser extension, version 0.10.0 and later</p>
+  <p class="meta"><strong>Last updated:</strong> 17 September 2026 &middot; <strong>Applies to:</strong> ScholarOS browser extension, version 0.11.0 and later</p>
 </header>
 
 <p class="lede">ScholarOS is a browser extension that copies your upcoming assignments off your college's learning management system and into a planner. This page explains what it reads, what it keeps, and the only two situations in which anything leaves your computer.</p>
@@ -78,16 +78,17 @@
 
 <p>It asks for one school at a time. When you pick your school, your browser asks whether ScholarOS may read that school's web address, and only that address. Nothing else on the internet is included: not your email, not your bank, not your search history. Settings lists every school you have granted, and removing one there hands the access back to your browser.</p>
 
-<p>On a school you have added, and only after you have signed in yourself, ScholarOS reads the page you are already looking at and picks out:</p>
+<p>On a school you have added, and only after you have signed in yourself, ScholarOS picks out:</p>
 <ul>
   <li>assignment and quiz titles</li>
   <li>course names and course codes</li>
   <li>due dates and times</li>
   <li>the link back to each assignment on your LMS</li>
-  <li>the type of item, where the page says so (assignment, quiz, discussion)</li>
+  <li>the type of item, where the school says so (assignment, quiz, discussion)</li>
+  <li>the instructions or description shown with an assignment, where the school provides one</li>
 </ul>
 
-<p>That is the whole list. ScholarOS reads the assignment listing that is already on your screen. It does not open other pages, follow links, or crawl your course.</p>
+<p>That is the whole list. On Brightspace and Moodle, ScholarOS reads the assignment listing already on your screen. On Canvas and Blackboard, it asks your school's own planner or calendar feed for the same details, at the same school address, using the session you are already signed into. It does not crawl your course or follow links to other sites.</p>
 
 <h2>2. What ScholarOS never reads or handles</h2>
 <ul>
@@ -96,26 +97,27 @@
   <li><strong>Cookies and session tokens.</strong> The extension does not request the <code>cookies</code> permission, so the browser does not give it access to them.</li>
   <li><strong>Your browsing history.</strong> The extension does not request the <code>history</code> permission.</li>
   <li><strong>Anything on any other website.</strong> Only the schools you added yourself, as described in section 1.</li>
-  <li><strong>Your Google account, unless you connect Calendar.</strong> ScholarOS requests no OAuth scope at all until you press Connect in Settings, and the only scope it ever asks for is <code>calendar.events</code>, which lets it create and update calendar events. It has no access to Google Drive, Gmail, your contacts, or your existing calendar entries, and it never asks for any of them. If you never connect Calendar, there is no consent screen because there is nothing to consent to.</li>
+  <li><strong>Anything in your Google account beyond calendar events, and nothing at all until you connect Calendar.</strong> ScholarOS requests no Google access until you press Connect in Settings, and the only scope it ever asks for is <code>calendar.events</code>. It has no access to Google Drive, Gmail, or your contacts, and it never asks for them. It never requests the name, description, location, or guest list of any event on your calendar (section 4). If you never connect Calendar, there is no consent screen because there is nothing to consent to.</li>
 </ul>
 
 <h2>3. Where your data is stored</h2>
 
-<p>On your device, in your browser's own extension storage. Two places:</p>
+<p>On your device, in your browser's own extension storage. Three places:</p>
 
 <div class="table-scroll">
 <table>
   <thead><tr><th>Store</th><th>What is in it</th></tr></thead>
   <tbody>
-    <tr><td><code>chrome.storage.local</code></td><td>The import review queue, your import-window setting (how many days ahead to scan), your Gemini API key if you have entered one, the schools you have added, and whether you have connected Google Calendar</td></tr>
-    <tr><td>IndexedDB, database <code>ScholarOS_DB</code></td><td>Your saved tasks, reminders, and class folders, including any document links you have pasted, plus the completion timings described below</td></tr>
+    <tr><td><code>chrome.storage.local</code></td><td>The import review queue, your import-window setting (how many days ahead to scan), your Gemini API key if you have entered one, the schools you have added, your licence key and the date your trial started. Google Calendar: whether it is connected, its two switches, when due dates last synced and whether that worked, whether this copy of ScholarOS has written any due dates, whether your Calendar was connected before version 0.11.0, and a random ID for this copy of ScholarOS. Notifications: the switches and morning time, a list of notifications already shown with the item and time each was for (each entry is dropped a week after that time), a copy of your Smart Plan study session times, titles and task numbers, and whether you pressed <strong>Not now</strong> on the dashboard card</td></tr>
+    <tr><td>IndexedDB, database <code>ScholarOS_DB</code></td><td>Your saved tasks, reminders (with their time, if you set one), and class folders, including any document links you have pasted, plus the completion timings described below</td></tr>
+    <tr><td>Local storage for the ScholarOS dashboard</td><td>Smart Plan: your preferences, the latest plan, your note for the planner, the assignments you picked to start early, and any assignment plan you saved from a chat. A plan built around your calendar records how many busy stretches it avoided; the busy times themselves are not kept. Assignment chats: one conversation per assignment. Clearing a chat deletes it, and chats for deleted assignments are removed the next time the dashboard opens</td></tr>
   </tbody>
 </table>
 </div>
 
 <p><strong>Completion timings.</strong> When you mark an assignment finished, ScholarOS records four numbers: which task it was, which class it belonged to, when it was due, and when you finished it. That is the whole record: no title, no notes, no content. It exists so Smart Plan can notice that you finish one class's work the night before and another's three days early, and schedule accordingly. Marking a task unfinished again, or deleting it, deletes its timing record. "Forget all of it" in Smart Plan erases the lot at once.</p>
 
-<p>Nothing is uploaded, backed up, or synced. If your browser profile syncs across your own devices, that is your browser doing it under your own account, not ScholarOS.</p>
+<p>Nothing is uploaded or backed up by ScholarOS. If your browser profile syncs across your own devices, your browser does that under your own account. The only copies outside your browser are the calendar entries described in section 4, and only if you connect Google Calendar.</p>
 
 <p>There is no ScholarOS account, no ScholarOS login, and no ScholarOS server holding a copy.</p>
 
@@ -125,27 +127,41 @@
 
 <h3>Google's Gemini API, under a key you supply</h3>
 
-<p>This powers two optional features: Smart Plan, and pasting text or a link to turn it into a task. Both are off until you paste your own free Gemini key into Settings. Without a key, the features tell you so and do nothing. No request is made.</p>
+<p>This powers four optional features: Smart Plan, the chat inside each assignment, pasting text or a link to turn it into a task, and pasting a syllabus to fill the Import Inbox. All are off until you paste your own free Gemini key into Settings. Without a key, the features tell you so and do nothing. No request is made.</p>
 
 <p>When you do use them, and only at the moment you click the button:</p>
 <ul>
   <li><strong>Paste-to-task</strong> sends the text or link you pasted into the box.</li>
-  <li><strong>Smart Plan</strong> sends the unfinished tasks that are actually due soon: title, course name, due date, status, and the internal numeric ID. It also sends the scheduling preferences you set (preferred study time, subjects you marked as weak, and the difficulty and weekly-hours figures you gave each class), the current date and time, and a summary of your completion timings: per class, how far ahead of the deadline you typically finish, roughly what hour of day you work, and how many completions that is based on. Tasks that are finished, undated, or not due for a long time are not sent at all.</li>
+  <li><strong>Paste a syllabus</strong> sends the syllabus text you pasted, the class name you chose for it, and the name and start and end dates of the term you picked, so Gemini can read dates like &ldquo;Week 5&rdquo;. What it finds waits in your Import Inbox, on your device, until you approve it.</li>
+  <li><strong>Smart Plan</strong> sends the unfinished tasks that are actually due soon (title, course name, due date, status, and the internal numeric ID) along with the scheduling preferences you set (preferred study time, subjects you marked as weak, and the difficulty and weekly-hours figures you gave each class), the current date and time, and a summary of your completion timings: per class, how far ahead of the deadline you typically finish, roughly what hour of day you work, and how many completions that is based on. It also sends any assignment you picked to start early, your note for the planner if you wrote one, and any assignment plan you saved from a chat. Tasks that are finished or undated are not sent, and neither is anything due a long way off unless you picked it.</li>
+  <li><strong>Smart Plan with Google Calendar connected</strong> also sends the times you are already busy on the days being planned, while &ldquo;Plan around my calendar&rdquo; is on. Each busy stretch is a start and end time, such as 14:00-15:30. No event name or detail is sent, because ScholarOS never has one.</li>
+  <li><strong>Assignment chat</strong> sends, for the one assignment you are asking about: its title, course name, due date, status, type and group, the instructions saved with it, your notes on it, the current date and time, and the most recent 20 messages of that conversation. Nothing about any other assignment is sent.</li>
+  <li><strong>Copy for another AI</strong> sends nothing. It puts the same assignment details on your clipboard, and where you paste them is your choice and governed by that service's terms.</li>
 </ul>
 
-<p>Those requests go to Google under <strong>your</strong> API key, so they are governed by your own agreement with Google and by Google's API terms and privacy policy, not by ScholarOS, which never sees the response on any server of its own. Nothing is sent in the background, on a schedule, or without you starting it.</p>
+<p>Those requests go to Google under <strong>your</strong> API key, so they are governed by your own agreement with Google and by Google's API terms and privacy policy. ScholarOS has no server to receive the response on. Nothing is sent to Gemini in the background, on a schedule, or without you starting it.</p>
+
 <h3>Google Calendar, if you connect it</h3>
 
 <p>This is off until you press Connect in Settings. Nothing about Calendar happens before that.</p>
 
-<p>When you press Connect, two things are asked for and both are shown to you by your browser: permission for ScholarOS to reach Google's API, and a Google sign-in asking only for the <code>calendar.events</code> scope. That scope lets an app see and change events on your calendars. ScholarOS uses it only to create its own study-block events and to find, update, or delete those same events later; it never reads, changes, or deletes an event it did not create. It gives no access to your contacts, your email, or anything else in your account.</p>
+<p>When you press Connect, two things are asked for and both are shown to you by your browser: permission for ScholarOS to reach Google's API (<code>www.googleapis.com</code> and <code>oauth2.googleapis.com</code>), and a Google sign-in asking only for the <code>calendar.events</code> scope. That scope lets an app see and change events on your calendars. ScholarOS uses it to write two kinds of entry to your calendar and to read when your other events start and end, as described below. It never changes or deletes an event it did not create. It gives no access to your contacts, your email, or anything else in your account.</p>
 
-<p>Once connected, and only when you press the sync button on a Smart Plan, ScholarOS sends the study blocks in that plan: a title, a start and end time, and the name of the class each block is for. Nothing else about your account leaves the device, and nothing syncs on a schedule or in the background.</p>
+<p><strong>What ScholarOS writes.</strong> Every entry it writes carries a private tag marking it as ScholarOS's, and ScholarOS only ever changes or deletes entries carrying that tag.</p>
+<ul>
+  <li><strong>Due dates.</strong> Each unfinished assignment due from today onward, up to 200 days ahead, becomes an all-day entry on its due date, marked free so it never makes you look busy to anyone booking time with you. The entry holds the class name, the assignment title, the due date and time, and the link back to the assignment. Its private tag also holds the assignment's number inside ScholarOS and the random ID for this copy of ScholarOS, so ScholarOS on a second computer never removes your first computer's entries. Changing an assignment updates its entry, and finishing or deleting it removes the entry. Once the unlock or the trial ends, nothing new is added, but entries for finished, deleted or changed work are still removed, so stale deadlines do not stay on your calendar.</li>
+  <li><strong>Study blocks.</strong> Each block in a Smart Plan becomes an event at its planned time, titled with the class and assignment, holding the due date, the plan's focus advice and suggested tools. A new plan replaces ScholarOS's own blocks on the same days.</li>
+</ul>
 
-<p>Pressing Disconnect in Settings clears the connection and tells Google to forget the grant, so it stops showing in your Google account's connected-apps list rather than lingering there invisibly.</p>
+<p>Due dates are written whenever your task list changes while the ScholarOS dashboard is open, and study blocks when a plan is made, as long as &ldquo;Add due dates and plans to my calendar automatically&rdquo; is on. With it off, nothing is written until you press <strong>Sync due dates now</strong> in Settings or <strong>Send to Google Calendar</strong> on a plan.</p>
 
-<p>ScholarOS's use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements. Calendar data is used only to put your study plan on your calendar. It is never sold, never used for advertising, and never read by a person.</p>
+<p><strong>What ScholarOS reads.</strong> When you make a Smart Plan with &ldquo;Plan around my calendar&rdquo; on, ScholarOS asks Google for the events on your main calendar between now and the end of the plan. For each event it requests only Google's ID for it, its start and end time, whether it is cancelled or marked free, whether you declined it, and ScholarOS's own tag if it has one. The name, description, location, and guest list are never requested, so they never reach your computer. ScholarOS leaves out cancelled, free, declined and all-day events and its own entries, merges the rest into busy stretches, and sends those start and end times to Gemini under your key, as described above. The busy times are not saved. ScholarOS also looks up its own tagged entries before writing, so it updates them instead of adding duplicates.</p>
 
+<p>Google Calendar is part of the $2.99 unlock and is included in the 14-day trial (section 8).</p>
+
+<p>Pressing Disconnect in Settings first asks whether to remove the due dates ScholarOS added, from today onward. Then it stops all of this, tells Google to forget the grant so it stops showing in your Google account's connected-apps list, and hands Google's web addresses back to your browser. Study blocks, past due dates, and due dates you chose to keep stay on your calendar until you delete them in Google Calendar. Each one says &ldquo;Added by ScholarOS.&rdquo; or &ldquo;Scheduled by ScholarOS.&rdquo; in its description.</p>
+
+<p>ScholarOS's use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements. Calendar data is used only to put your due dates and study plan on your calendar and to plan around the times you are already busy. It is never sold, never used for advertising, and never read by a person.</p>
 
 <h3>About your Gemini API key</h3>
 
@@ -157,7 +173,13 @@
 
 <p>ScholarOS never fetches, downloads, reads, or previews the contents of a linked document. It stores a string of text and opens it in a tab, which is the same thing a bookmark does.</p>
 
-<h2>6. Permissions, and why each one exists</h2>
+<h2>6. Desktop notifications</h2>
+
+<p>Notifications are off until you press <strong>Turn on notifications</strong>, on the dashboard card or in Settings, and your browser asks whether ScholarOS may display notifications. After that, each kind has its own switch in Settings: a morning summary of what is due and overdue, a heads-up 24 hours and 2 hours before an assignment is due, reminders at their time, and study session starts from your Smart Plan, which stays off until you switch it on.</p>
+
+<p>ScholarOS decides what to show on your own computer, with a check once a minute while your browser is running. Your operating system displays the notification through the browser. Nothing about notifications is sent anywhere, and there is no push service. What ScholarOS keeps to avoid showing the same notification twice is listed in section 3.</p>
+
+<h2>7. Permissions, and why each one exists</h2>
 
 <div class="table-scroll">
 <table>
@@ -165,16 +187,19 @@
   <tbody>
     <tr><td><code>sidePanel</code></td><td>Shows the planner in the browser's side panel next to your LMS page</td></tr>
     <tr><td><code>storage</code></td><td>Saves your tasks, settings, and review queue on your device (section 3)</td></tr>
-    <tr><td><code>identity</code></td><td>Signs you in to Google, only if you connect Google Calendar. Requests the <code>calendar.events</code> scope and nothing else</td></tr>
     <tr><td><code>scripting</code></td><td>Points ScholarOS at a school the moment you add it, instead of at the next browser restart. It is never used on a site you have not added</td></tr>
-    <tr><td>Access to the school you choose</td><td>Reads the assignment list off the page you are signed into (section 1). Granted by you, one school at a time, and revocable in Settings</td></tr>
+    <tr><td><code>alarms</code></td><td>Wakes ScholarOS once a minute, on your device, to check whether a notification is due (section 6). It adds nothing to the install prompt and sends nothing anywhere</td></tr>
+    <tr><td><code>identity</code></td><td>Signs you in to Google, only if you connect Google Calendar. Requests the <code>calendar.events</code> scope and nothing else</td></tr>
+    <tr><td><code>notifications</code>, asked for when you press <strong>Turn on notifications</strong></td><td>Shows the desktop notifications you switched on (section 6). Never requested at install</td></tr>
+    <tr><td>Access to the school you choose</td><td>Reads your assignments from the school you are signed into (section 1). Granted by you, one school at a time, and revocable in Settings</td></tr>
+    <tr><td>Access to <code>www.googleapis.com</code> and <code>oauth2.googleapis.com</code>, asked for when you press Connect</td><td>Reaches Google Calendar (section 4). Handed back when you press Disconnect</td></tr>
   </tbody>
 </table>
 </div>
 
-<p>There are no others. In particular there is no <code>activeTab</code>, no <code>cookies</code>, no <code>history</code>, and no OAuth scope beyond <code>calendar.events</code>, which is requested only if you connect Google Calendar. ScholarOS has never had a server, and adding Canvas, Blackboard and Moodle did not change that: those systems are read through your own school's web address, using the session you are already signed into, and nothing is sent anywhere else.</p>
+<p>There are no others. In particular there is no <code>tabs</code>, no <code>activeTab</code>, no <code>cookies</code>, no <code>history</code>, and no OAuth scope beyond <code>calendar.events</code>, which is requested only if you connect Google Calendar. ScholarOS has never had a server, and adding Canvas, Blackboard and Moodle did not change that: those systems are read through your own school's web address, using the session you are already signed into, and nothing is sent anywhere else.</p>
 
-<h2>7. Payment</h2>
+<h2>8. Payment</h2>
 
 <p>ScholarOS costs $2.99 once, after a 14-day trial, with no account and no subscription. Payment is handled by <strong>Stripe</strong> on Stripe's own hosted page in your browser. You receive a license key and paste it into Settings, where it is stored locally like any other setting.</p>
 
@@ -182,30 +207,32 @@
 
 <p><strong>The license key is checked on your own device and is never sent anywhere.</strong> Validation is a signature check performed in your browser, so it works with no internet connection and produces no network request. ScholarOS learns nothing about when or whether you use it.</p>
 
-<p>The trial starts the first time you open ScholarOS and needs no card, no email address, and no sign-up. When it ends, the planner keeps working in full and only the paid extras stop.</p>
+<p>The trial starts the first time you open ScholarOS and needs no card, no email address, and no sign-up. When it ends, the planner keeps working in full and only the paid extras stop, Google Calendar among them. If your Google Calendar was connected when version 0.11.0 first ran, you keep sending study plans to it free.</p>
 
-<h2>8. Children</h2>
+<h2>9. Children</h2>
 
 <p>ScholarOS is built for college students and is not directed at children under 13. It collects no personal information from anyone, of any age, on any server. See section 3.</p>
 
-<h2>9. Removing everything</h2>
+<h2>10. Removing everything</h2>
 
 <p>Uninstall the extension. Your browser deletes the extension's storage with it, which is every piece of data described in section 3.</p>
 
-<p>There is no account to close, no data-deletion request to file, and no authorization to revoke, because none was ever granted. If you entered a Gemini key and want to be thorough, revoke it at Google AI Studio as well. That is a key Google issued to you, not to ScholarOS.</p>
+<p>If you connected Google Calendar, press Disconnect in Settings first so Google forgets the grant, and choose to remove the due dates ScholarOS added if you want them gone. You can also remove ScholarOS later from the third-party access page of your Google account. Anything ScholarOS wrote that you kept stays on your calendar until you delete it in Google Calendar (section 4).</p>
 
-<h2>10. Changes to this policy</h2>
+<p>There is no account to close and no data-deletion request to file. If you entered a Gemini key and want to be thorough, revoke it at Google AI Studio as well. That is a key Google issued to you, not to ScholarOS.</p>
+
+<h2>11. Changes to this policy</h2>
 
 <p>If this policy changes, the date at the top of the page changes with it, and the updated version replaces this one at the same public address. Material changes to what leaves your device will be called out in the extension's release notes.</p>
 
-<h2>11. Contact</h2>
+<h2>12. Contact</h2>
 
 <p>Questions, corrections, or anything in this policy that does not match what you observe the extension doing:</p>
 
 <p><a href="mailto:scholaroshelp@gmail.com">scholaroshelp@gmail.com</a></p>
 
 <footer>
-  ScholarOS is an independent project. It is not affiliated with, endorsed by, or connected to Rochester Institute of Technology, D2L Corporation, Microsoft, or Google.
+  ScholarOS is an independent project. It is not affiliated with, endorsed by, or connected to Rochester Institute of Technology, D2L Corporation, Instructure, Anthology, Moodle Pty Ltd, Microsoft, or Google.
 </footer>
 
 </div>

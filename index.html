@@ -360,7 +360,7 @@
 
 <nav>
   <div class="wrap nav-in">
-    <a class="brand" href="/scholaros-privacy/">
+    <a class="brand" href="/">
       <span class="mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 10 12 5 2 10l10 5 10-5Z"/>
@@ -431,12 +431,12 @@
 
     <div class="grid-2">
       <div class="item">
-        <h3>Reads the page you are on</h3>
-        <p>You sign in to your school yourself, two-factor and all. ScholarOS waits until you are already in, then reads the assignment list that is on your screen. It does not open other pages or crawl your courses.</p>
+        <h3>Reads the school you are signed into</h3>
+        <p>You sign in to your school yourself, two-factor and all. ScholarOS waits until you are already in, then reads your assignments from that school: the list on your screen on Brightspace and Moodle, and the school's own planner feed on Canvas and Blackboard. It does not crawl your courses.</p>
       </div>
       <div class="item">
         <h3>Shows you every import before it saves</h3>
-        <p>Imports land in a review inbox with a confidence flag and where each field came from. Fix a title, a course, or a due date before it becomes a task. A parser miss is an annoyance rather than a wrong calendar.</p>
+        <p>Imports from your school, or from a syllabus you paste, land in a review inbox with a confidence flag and where each field came from. Fix a title, a course, or a due date before it becomes a task. A parser miss is an annoyance rather than a wrong calendar.</p>
       </div>
       <div class="item">
         <h3>Calendar, list, classes, reminders</h3>
@@ -444,7 +444,15 @@
       </div>
       <div class="item">
         <h3>Plans around how you actually work</h3>
-        <p>Smart Plan builds a study schedule from what is due. It learns that you finish one class the night before and another three days early, and schedules accordingly. Runs on a free Google Gemini key you supply.</p>
+        <p>Smart Plan builds a study schedule up to two weeks ahead from what is due, and lets you start something early. It learns that you finish one class the night before and another three days early, and schedules accordingly. Each assignment also has its own chat for working out how to tackle it. Runs on a free Google Gemini key you supply.</p>
+      </div>
+      <div class="item">
+        <h3>Deadlines on your Google Calendar</h3>
+        <p>Connect Google Calendar and every due date lands on it as an all-day entry marked free, with your study plan as blocks. Smart Plan reads when your classes and shifts start and end, never what they are called, and plans around them. Needs Google Chrome.</p>
+      </div>
+      <div class="item">
+        <h3>Desktop notifications</h3>
+        <p>A morning summary, a heads-up a day and two hours before each deadline, your reminders, and study sessions if you want them. Each has its own switch, and nothing shows until you turn them on.</p>
       </div>
       <div class="item">
         <h3>Remembers which docs belong to which class</h3>
@@ -473,7 +481,9 @@
           <li>Calendar, list, task detail, reminders</li>
           <li>Classes, terms, and assignment groups</li>
           <li>The source link back to every assignment</li>
-          <li>Smart Plan, on your own Gemini key</li>
+          <li>Smart Plan and a chat for each assignment, on your own Gemini key</li>
+          <li>Paste a syllabus to load a whole term, on the same key</li>
+          <li>Desktop notifications and reminders</li>
         </ul>
       </div>
 
@@ -481,6 +491,7 @@
         <h3>Unlocked</h3>
         <div class="price">$2.99 <small>once</small></div>
         <ul>
+          <li>Google Calendar: due dates and study blocks on your calendar, planned around your busy times</li>
           <li>Document suggestions and link attachment</li>
           <li>Course memory across the semester</li>
           <li>One-click workspace launch</li>
@@ -489,7 +500,7 @@
       </div>
     </div>
 
-    <p class="refund">Everything is unlocked for 14 days when you install, with no card and no email address. When the trial ends the planner keeps working in full and only the three extras above stop. Nothing you saved is taken away.</p>
+    <p class="refund">Everything is unlocked for 14 days when you install, with no card and no email address. When the trial ends the planner keeps working in full and only the extras above stop. Nothing you saved is taken away. If you connected Google Calendar before version 0.11.0, when it was free, sending study plans to it stays free for you.</p>
     <p class="refund">Paying gets you a licence key by email, usually within a few hours, which you paste into Settings. The key is checked on your own device, so it works offline and ScholarOS learns nothing about when you use it. Want a refund? Email <a href="mailto:scholaroshelp@gmail.com">scholaroshelp@gmail.com</a> and you will get one.</p>
   </div>
 </section>
@@ -504,11 +515,11 @@
       <div><span>&#10003;</span> Never touches Duo, SSO, or any multi-factor step</div>
       <div><span>&#10003;</span> Never runs on any site except the school you added yourself</div>
       <div><span>&#10003;</span> Never attaches a document without you clicking to confirm it</div>
-      <div><span>&#10003;</span> Never asks for access to your Google account</div>
+      <div><span>&#10003;</span> Never touches your Google account unless you connect Calendar, and never reads what your events say</div>
       <div><span>&#10003;</span> Never does your coursework</div>
     </div>
 
-    <p class="refund">Uninstalling removes everything. The browser deletes the extension's storage with it, and there is no account to close because none was created. The full detail is in the <a href="privacy.html">privacy policy</a>.</p>
+    <p class="refund">Uninstalling removes everything ScholarOS keeps. The browser deletes the extension's storage with it, and there is no account to close because none was created. If you connected Google Calendar, the entries it wrote stay on your calendar until you delete them. The full detail is in the <a href="privacy.html">privacy policy</a>.</p>
   </div>
 </section>
 
@@ -517,11 +528,11 @@
     <h2>Getting it</h2>
 
     <div class="status">
-      <p><strong>ScholarOS is in review for Microsoft Edge Add-ons.</strong> It works with Canvas, Brightspace, Blackboard and Moodle at any school. You add yours in one click when you open it. Once certification clears, the install link goes here.</p>
-      <p>Want to know when it is out, or have a school you would like added to the built-in list? Email <a href="mailto:scholaroshelp@gmail.com">scholaroshelp@gmail.com</a>.</p>
+      <p><strong>ScholarOS is on the Chrome Web Store.</strong> <a href="https://chromewebstore.google.com/detail/scholaros/lmoefngidmjcikdmnncaekpopdekinnk">Add it to Chrome</a>. It works with Canvas, Brightspace, Blackboard and Moodle at any school. You add yours in one click when you open it.</p>
+      <p>Have a school you would like added to the built-in list? Email <a href="mailto:scholaroshelp@gmail.com">scholaroshelp@gmail.com</a>.</p>
     </div>
 
-    <p class="refund">It runs on Edge and Chrome, and needs a Chromium version of 114 or newer. If your school is not in the list, paste its address and ScholarOS will use it.</p>
+    <p class="refund">It needs Chrome 114 or newer. Google Calendar sign-in works in Google Chrome only. If your school is not in the list, paste its address and ScholarOS will use it.</p>
   </div>
 </section>
 
