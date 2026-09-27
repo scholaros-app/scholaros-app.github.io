@@ -65,7 +65,7 @@
 <header>
   <p class="meta" style="margin-bottom:.9rem"><a href="./">&larr; ScholarOS</a></p>
   <h1>ScholarOS Privacy Policy</h1>
-  <p class="meta"><strong>Last updated:</strong> 17 September 2026 &middot; <strong>Applies to:</strong> ScholarOS browser extension, version 0.11.0 and later</p>
+  <p class="meta"><strong>Last updated:</strong> 24 September 2026 &middot; <strong>Applies to:</strong> ScholarOS browser extension, version 0.11.1 and later</p>
 </header>
 
 <p class="lede">ScholarOS is a browser extension that copies your upcoming assignments off your college's learning management system and into a planner. This page explains what it reads, what it keeps, and the only two situations in which anything leaves your computer.</p>
@@ -89,6 +89,7 @@
 </ul>
 
 <p>That is the whole list. On Brightspace and Moodle, ScholarOS reads the assignment listing already on your screen. On Canvas and Blackboard, it asks your school's own planner or calendar feed for the same details, at the same school address, using the session you are already signed into. It does not crawl your course or follow links to other sites.</p>
+<p>When you press the ScholarOS icon on a page, your browser lets ScholarOS look at that one page, once, to answer two questions: which course system it is, and whether its links point to your school&rsquo;s course site. That is how it can offer &ldquo;Your Canvas is at northeastern.instructure.com&rdquo; from a help page. Nothing from the page is kept except the course site address it offers you, and it can read no other tab and no page you have not pressed the icon on.</p>
 
 <h2>2. What ScholarOS never reads or handles</h2>
 <ul>
@@ -132,7 +133,7 @@
 <p>When you do use them, and only at the moment you click the button:</p>
 <ul>
   <li><strong>Paste-to-task</strong> sends the text or link you pasted into the box.</li>
-  <li><strong>Paste a syllabus</strong> sends the syllabus text you pasted, the class name you chose for it, and the name and start and end dates of the term you picked, so Gemini can read dates like &ldquo;Week 5&rdquo;. What it finds waits in your Import Inbox, on your device, until you approve it.</li>
+  <li><strong>Paste a syllabus</strong> sends the syllabus text in its box, the class name you chose for it, and the name and start and end dates of the term you picked, so Gemini can read dates like &ldquo;Week 5&rdquo;. That text is what you pasted, or what ScholarOS read out of a PDF you chose. A PDF is read on your device and the file itself is never sent; only its text goes, and you can see and edit that text in the box first. What Gemini finds waits in your Import Inbox, on your device, until you approve it.</li>
   <li><strong>Smart Plan</strong> sends the unfinished tasks that are actually due soon (title, course name, due date, status, and the internal numeric ID) along with the scheduling preferences you set (preferred study time, subjects you marked as weak, and the difficulty and weekly-hours figures you gave each class), the current date and time, and a summary of your completion timings: per class, how far ahead of the deadline you typically finish, roughly what hour of day you work, and how many completions that is based on. It also sends any assignment you picked to start early, your note for the planner if you wrote one, and any assignment plan you saved from a chat. Tasks that are finished or undated are not sent, and neither is anything due a long way off unless you picked it.</li>
   <li><strong>Smart Plan with Google Calendar connected</strong> also sends the times you are already busy on the days being planned, while &ldquo;Plan around my calendar&rdquo; is on. Each busy stretch is a start and end time, such as 14:00-15:30. No event name or detail is sent, because ScholarOS never has one.</li>
   <li><strong>Assignment chat</strong> sends, for the one assignment you are asking about: its title, course name, due date, status, type and group, the instructions saved with it, your notes on it, the current date and time, and the most recent 20 messages of that conversation. Nothing about any other assignment is sent.</li>
@@ -188,6 +189,7 @@
     <tr><td><code>sidePanel</code></td><td>Shows the planner in the browser's side panel next to your LMS page</td></tr>
     <tr><td><code>storage</code></td><td>Saves your tasks, settings, and review queue on your device (section 3)</td></tr>
     <tr><td><code>scripting</code></td><td>Points ScholarOS at a school the moment you add it, instead of at the next browser restart. It is never used on a site you have not added</td></tr>
+    <tr><td><code>activeTab</code></td><td>Lets ScholarOS look at the page you are on, only when you press its icon, to offer that site as your school (section 1). It adds nothing to the install prompt and ends when you leave the page</td></tr>
     <tr><td><code>alarms</code></td><td>Wakes ScholarOS once a minute, on your device, to check whether a notification is due (section 6). It adds nothing to the install prompt and sends nothing anywhere</td></tr>
     <tr><td><code>identity</code></td><td>Signs you in to Google, only if you connect Google Calendar. Requests the <code>calendar.events</code> scope and nothing else</td></tr>
     <tr><td><code>notifications</code>, asked for when you press <strong>Turn on notifications</strong></td><td>Shows the desktop notifications you switched on (section 6). Never requested at install</td></tr>
@@ -197,7 +199,7 @@
 </table>
 </div>
 
-<p>There are no others. In particular there is no <code>tabs</code>, no <code>activeTab</code>, no <code>cookies</code>, no <code>history</code>, and no OAuth scope beyond <code>calendar.events</code>, which is requested only if you connect Google Calendar. ScholarOS has never had a server, and adding Canvas, Blackboard and Moodle did not change that: those systems are read through your own school's web address, using the session you are already signed into, and nothing is sent anywhere else.</p>
+<p>There are no others. In particular there is no <code>tabs</code>, no <code>cookies</code>, no <code>history</code>, and no OAuth scope beyond <code>calendar.events</code>, which is requested only if you connect Google Calendar. ScholarOS has never had a server, and adding Canvas, Blackboard and Moodle did not change that: those systems are read through your own school's web address, using the session you are already signed into, and nothing is sent anywhere else.</p>
 
 <h2>8. Payment</h2>
 
