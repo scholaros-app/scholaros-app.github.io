@@ -65,7 +65,7 @@
 <header>
   <p class="meta" style="margin-bottom:.9rem"><a href="./">&larr; ScholarOS</a></p>
   <h1>ScholarOS Privacy Policy</h1>
-  <p class="meta"><strong>Last updated:</strong> 24 September 2026 &middot; <strong>Applies to:</strong> ScholarOS browser extension, version 0.11.1 and later</p>
+  <p class="meta"><strong>Last updated:</strong> 29 September 2026 &middot; <strong>Applies to:</strong> ScholarOS browser extension, version 0.11.1 and later</p>
 </header>
 
 <p class="lede">ScholarOS is a browser extension that copies your upcoming assignments off your college's learning management system and into a planner. This page explains what it reads, what it keeps, and the only two situations in which anything leaves your computer.</p>
@@ -111,7 +111,7 @@
   <tbody>
     <tr><td><code>chrome.storage.local</code></td><td>The import review queue, your import-window setting (how many days ahead to scan), your Gemini API key if you have entered one, the schools you have added, your licence key and the date your trial started. Google Calendar: whether it is connected, its two switches, when due dates last synced and whether that worked, whether this copy of ScholarOS has written any due dates, whether your Calendar was connected before version 0.11.0, and a random ID for this copy of ScholarOS. Notifications: the switches and morning time, a list of notifications already shown with the item and time each was for (each entry is dropped a week after that time), a copy of your Smart Plan study session times, titles and task numbers, and whether you pressed <strong>Not now</strong> on the dashboard card</td></tr>
     <tr><td>IndexedDB, database <code>ScholarOS_DB</code></td><td>Your saved tasks, reminders (with their time, if you set one), and class folders, including any document links you have pasted, plus the completion timings described below</td></tr>
-    <tr><td>Local storage for the ScholarOS dashboard</td><td>Smart Plan: your preferences, the latest plan, your note for the planner, the assignments you picked to start early, and any assignment plan you saved from a chat. A plan built around your calendar records how many busy stretches it avoided; the busy times themselves are not kept. Assignment chats: one conversation per assignment. Clearing a chat deletes it, and chats for deleted assignments are removed the next time the dashboard opens</td></tr>
+    <tr><td>Local storage for the ScholarOS dashboard</td><td>Smart Plan: your preferences, the latest plan, your note for the planner, the assignments you picked to start early, and any assignment plan you saved from a chat. A plan built around your calendar records how many busy stretches it avoided; the busy times themselves are not kept. Assignment chats: one conversation per assignment. Clearing a chat deletes it, and chats for deleted assignments are removed the next time the dashboard opens. Grades: the categories, scores and grading policy you entered or read in for each class, and any grading rules quoted from a syllabus</td></tr>
   </tbody>
 </table>
 </div>
@@ -128,15 +128,18 @@
 
 <h3>Google's Gemini API, under a key you supply</h3>
 
-<p>This powers four optional features: Smart Plan, the chat inside each assignment, pasting text or a link to turn it into a task, and pasting a syllabus to fill the Import Inbox. All are off until you paste your own free Gemini key into Settings. Without a key, the features tell you so and do nothing. No request is made.</p>
+<p>This powers optional features: Smart Plan and its focus tips in Tonight, project steps, the chat inside each assignment, pasting text or a link to turn it into a task, pasting a syllabus to fill the Import Inbox, and reading grades and a class's grading policy. All are off until you paste your own free Gemini key into Settings. Without a key, the features tell you so and do nothing. No request is made.</p>
 
 <p>When you do use them, and only at the moment you click the button:</p>
 <ul>
   <li><strong>Paste-to-task</strong> sends the text or link you pasted into the box.</li>
-  <li><strong>Paste a syllabus</strong> sends the syllabus text in its box, the class name you chose for it, and the name and start and end dates of the term you picked, so Gemini can read dates like &ldquo;Week 5&rdquo;. That text is what you pasted, or what ScholarOS read out of a PDF you chose. A PDF is read on your device and the file itself is never sent; only its text goes, and you can see and edit that text in the box first. What Gemini finds waits in your Import Inbox, on your device, until you approve it.</li>
+  <li><strong>Paste a syllabus</strong> sends the syllabus text in its box, the class name you chose for it, and the name and start and end dates of the term you picked, so Gemini can read dates like &ldquo;Week 5&rdquo;. That text is what you pasted, or what ScholarOS read out of a PDF you chose. A PDF is read on your device and only its text goes, and you can see and edit that text in the box first. The one exception is a scanned PDF, whose pages are pictures with no text: if you press &ldquo;Read it with Gemini&rdquo;, the PDF file itself is sent so Gemini can transcribe it, and the transcription lands in the box for you to check. What Gemini finds waits in your Import Inbox, on your device, until you approve it.</li>
   <li><strong>Smart Plan</strong> sends the unfinished tasks that are actually due soon (title, course name, due date, status, and the internal numeric ID) along with the scheduling preferences you set (preferred study time, subjects you marked as weak, and the difficulty and weekly-hours figures you gave each class), the current date and time, and a summary of your completion timings: per class, how far ahead of the deadline you typically finish, roughly what hour of day you work, and how many completions that is based on. It also sends any assignment you picked to start early, your note for the planner if you wrote one, and any assignment plan you saved from a chat. Tasks that are finished or undated are not sent, and neither is anything due a long way off unless you picked it.</li>
   <li><strong>Smart Plan with Google Calendar connected</strong> also sends the times you are already busy on the days being planned, while &ldquo;Plan around my calendar&rdquo; is on. Each busy stretch is a start and end time, such as 14:00-15:30. No event name or detail is sent, because ScholarOS never has one.</li>
   <li><strong>Assignment chat</strong> sends, for the one assignment you are asking about: its title, course name, due date, status, type and group, the instructions saved with it, your notes on it, the current date and time, and the most recent 20 messages of that conversation. Nothing about any other assignment is sent.</li>
+  <li><strong>Tonight&rsquo;s focus tips</strong>, when you press Start, send for each piece of work picked: its title, course name, type, points, description, and the minutes planned for it.</li>
+  <li><strong>Break into steps</strong> sends, for the one assignment: its title, course name, type, points, description, today&rsquo;s date and its due date.</li>
+  <li><strong>Grades</strong> sends, only when you press Read with Gemini: the grades page text you pasted, or the syllabus text (or a scanned syllabus PDF, as above) for reading the grading policy, with the class name. What comes back is shown to you, checked against your text, and saved only when you choose to use it.</li>
   <li><strong>Copy for another AI</strong> sends nothing. It puts the same assignment details on your clipboard, and where you paste them is your choice and governed by that service's terms.</li>
 </ul>
 
