@@ -65,7 +65,7 @@
 <header>
   <p class="meta" style="margin-bottom:.9rem"><a href="./">&larr; ScholarOS</a></p>
   <h1>ScholarOS Privacy Policy</h1>
-  <p class="meta"><strong>Last updated:</strong> 29 September 2026 &middot; <strong>Applies to:</strong> ScholarOS browser extension, version 0.11.1 and later</p>
+  <p class="meta"><strong>Last updated:</strong> 4 November 2026 &middot; <strong>Applies to:</strong> ScholarOS browser extension, version 0.11.1 and later</p>
 </header>
 
 <p class="lede">ScholarOS is a browser extension that copies your upcoming assignments off your college's learning management system and into a planner. This page explains what it reads, what it keeps, and the only two situations in which anything leaves your computer.</p>
@@ -88,7 +88,7 @@
   <li>the instructions or description shown with an assignment, where the school provides one</li>
 </ul>
 
-<p>That is the whole list. On Brightspace and Moodle, ScholarOS reads the assignment listing already on your screen. On Canvas and Blackboard, it asks your school's own planner or calendar feed for the same details, at the same school address, using the session you are already signed into. It does not crawl your course or follow links to other sites.</p>
+<p>That is the whole list. On Moodle, ScholarOS reads the assignment listing already on your screen. On Canvas and Blackboard, it asks your school's own planner or calendar feed for the same details, at the same school address, using the session you are already signed into. On Brightspace it does both: it reads the listing on your screen, and asks your school's own list of your courses, their assignment folders, their quizzes and your list of work due (or, if the school will not give that list, your course calendar's due dates) for the same details, the same way, at most once every 15 minutes. It does not crawl your course or follow links to other sites.</p>
 <p>When you press the ScholarOS icon on a page, your browser lets ScholarOS look at that one page, once, to answer two questions: which course system it is, and whether its links point to your school&rsquo;s course site. That is how it can offer &ldquo;Your Canvas is at northeastern.instructure.com&rdquo; from a help page. Nothing from the page is kept except the course site address it offers you, and it can read no other tab and no page you have not pressed the icon on.</p>
 
 <h2>2. What ScholarOS never reads or handles</h2>
@@ -103,13 +103,14 @@
 
 <h2>3. Where your data is stored</h2>
 
-<p>On your device, in your browser's own extension storage. Three places:</p>
+<p>On your device, in your browser's own extension storage. Four places:</p>
 
 <div class="table-scroll">
 <table>
   <thead><tr><th>Store</th><th>What is in it</th></tr></thead>
   <tbody>
-    <tr><td><code>chrome.storage.local</code></td><td>The import review queue, your import-window setting (how many days ahead to scan), your Gemini API key if you have entered one, the schools you have added, your licence key and the date your trial started. Google Calendar: whether it is connected, its two switches, when due dates last synced and whether that worked, whether this copy of ScholarOS has written any due dates, whether your Calendar was connected before version 0.11.0, and a random ID for this copy of ScholarOS. Notifications: the switches and morning time, a list of notifications already shown with the item and time each was for (each entry is dropped a week after that time), a copy of your Smart Plan study session times, titles and task numbers, and whether you pressed <strong>Not now</strong> on the dashboard card</td></tr>
+    <tr><td><code>chrome.storage.local</code></td><td>The import review queue, your import-window setting (how many days ahead to scan), your Gemini API key if you have entered one, the schools you have added, your licence key and the date your trial started. Google Calendar: whether it is connected, its two switches, when due dates last synced and whether that worked, whether this copy of ScholarOS has written any due dates, whether your Calendar was connected before version 0.11.0, a random ID for this copy of ScholarOS, how this copy signs in to Google (Chrome's own sign-in, or Google's sign-in page in every other browser), and, for Google's sign-in page, which of your signed-in Google accounts you chose, as Google's own number for it (such as 0 or 1). Notifications: the switches and morning time, a list of notifications already shown with the item and time each was for (each entry is dropped a week after that time), a copy of your Smart Plan study session times, titles and task numbers, and whether you pressed <strong>Not now</strong> on the dashboard card. Brightspace: the assignments and course names last read from each school&rsquo;s own data, so it is asked at most once every 15 minutes, replaced on every read</td></tr>
+    <tr><td><code>chrome.storage.session</code>, in memory only and gone when the browser closes</td><td>In every browser except Google Chrome, the Google Calendar access token from section 4, for at most an hour</td></tr>
     <tr><td>IndexedDB, database <code>ScholarOS_DB</code></td><td>Your saved tasks, reminders (with their time, if you set one), and class folders, including any document links you have pasted, plus the completion timings described below</td></tr>
     <tr><td>Local storage for the ScholarOS dashboard</td><td>Smart Plan: your preferences, the latest plan, your note for the planner, the assignments you picked to start early, and any assignment plan you saved from a chat. A plan built around your calendar records how many busy stretches it avoided; the busy times themselves are not kept. Assignment chats: one conversation per assignment. Clearing a chat deletes it, and chats for deleted assignments are removed the next time the dashboard opens. Grades: the categories, scores and grading policy you entered or read in for each class, and any grading rules quoted from a syllabus</td></tr>
   </tbody>
@@ -125,6 +126,7 @@
 <h2>4. What leaves your device</h2>
 
 <p>ScholarOS has two outbound network paths, and both go to Google. Both are optional and both are off until you switch them on: <strong>the Gemini API, under an API key you supply yourself</strong>, and <strong>Google Calendar, if you connect it</strong>.</p>
+<p>In Firefox, the browser itself asks your consent to send &quot;website content&quot; the first time you save a Gemini key or press Connect. Saying no keeps everything else working, and you can change it later in Firefox's add-on settings.</p>
 
 <h3>Google's Gemini API, under a key you supply</h3>
 
@@ -150,6 +152,7 @@
 <p>This is off until you press Connect in Settings. Nothing about Calendar happens before that.</p>
 
 <p>When you press Connect, two things are asked for and both are shown to you by your browser: permission for ScholarOS to reach Google's API (<code>www.googleapis.com</code> and <code>oauth2.googleapis.com</code>), and a Google sign-in asking only for the <code>calendar.events</code> scope. That scope lets an app see and change events on your calendars. ScholarOS uses it to write two kinds of entry to your calendar and to read when your other events start and end, as described below. It never changes or deletes an event it did not create. It gives no access to your contacts, your email, or anything else in your account.</p>
+<p>In Google Chrome the sign-in is Chrome's own, using the account Chrome is signed in with. In Firefox, Brave, Opera, Vivaldi, Arc and Edge it is Google's own sign-in page, which your browser opens in a window. The access it gives lasts about an hour and is held in memory only. ScholarOS renews it quietly from the Google session already in that browser, and asks you to sign in again if Google wants a page. In Firefox the same prompt also asks your consent to send &quot;website content&quot;, which Firefox requires before any add-on sends data.</p>
 
 <p><strong>What ScholarOS writes.</strong> Every entry it writes carries a private tag marking it as ScholarOS's, and ScholarOS only ever changes or deletes entries carrying that tag.</p>
 <ul>
@@ -189,12 +192,12 @@
 <table>
   <thead><tr><th>Permission</th><th>Why</th></tr></thead>
   <tbody>
-    <tr><td><code>sidePanel</code></td><td>Shows the planner in the browser's side panel next to your LMS page</td></tr>
+    <tr><td><code>sidePanel</code></td><td>Shows the planner in the browser's side panel next to your LMS page. Firefox has no such permission: the same panel is its sidebar</td></tr>
     <tr><td><code>storage</code></td><td>Saves your tasks, settings, and review queue on your device (section 3)</td></tr>
     <tr><td><code>scripting</code></td><td>Points ScholarOS at a school the moment you add it, instead of at the next browser restart. It is never used on a site you have not added</td></tr>
     <tr><td><code>activeTab</code></td><td>Lets ScholarOS look at the page you are on, only when you press its icon, to offer that site as your school (section 1). It adds nothing to the install prompt and ends when you leave the page</td></tr>
     <tr><td><code>alarms</code></td><td>Wakes ScholarOS once a minute, on your device, to check whether a notification is due (section 6). It adds nothing to the install prompt and sends nothing anywhere</td></tr>
-    <tr><td><code>identity</code></td><td>Signs you in to Google, only if you connect Google Calendar. Requests the <code>calendar.events</code> scope and nothing else</td></tr>
+    <tr><td><code>identity</code></td><td>Signs you in to Google, only if you connect Google Calendar: through Chrome's own sign-in in Google Chrome, and through Google's sign-in page in every other browser. Requests the <code>calendar.events</code> scope and nothing else</td></tr>
     <tr><td><code>notifications</code>, asked for when you press <strong>Turn on notifications</strong></td><td>Shows the desktop notifications you switched on (section 6). Never requested at install</td></tr>
     <tr><td>Access to the school you choose</td><td>Reads your assignments from the school you are signed into (section 1). Granted by you, one school at a time, and revocable in Settings</td></tr>
     <tr><td>Access to <code>www.googleapis.com</code> and <code>oauth2.googleapis.com</code>, asked for when you press Connect</td><td>Reaches Google Calendar (section 4). Handed back when you press Disconnect</td></tr>
